@@ -12,6 +12,22 @@ export const DEPT = `${PREFIX}/DEPT`
 // 客户管理
 export const CUSTOMER = `${PREFIX}/CUSTOMER`
 
+// 客户管理列表
+export const CUSTOMER_LIST = `${PREFIX}/CUSTOMER_LIST`
+
+// 消息推送管理
+export const MESSAGE_PUSH_MANAGE = `${PREFIX}/MESSAGE_PUSH_MANAGE`
+
+// 商业阶段管理
+export const BUSINESS_OPPORTUNITY_MANAGE = `${PREFIX}/BUSINESS_OPPORTUNITY_MANAGE`
+
+// VIP管理
+// 会员设置
+export const VIP_SETTINGS = `${PREFIX}/VIP_SETTINGS`
+
+// 会员等级设置
+export const VIP_LEVEL_SETTINGS = `${PREFIX}/VIP_LEVEL_SETTINGS`
+
 // 贴牌商列表
 export const OEM = `${PREFIX}/OEM`
 

@@ -56,6 +56,7 @@ export default {
   computed: {
     ...mapGetters(['menuList', 'currentMenuUrl', 'currentMenuOptions', 'adminInfo']),
     menuMap() {
+      console.log(this.menuList, 'meunlist')
       // 提供路由ID映射
       let menuIdMap = {}
       // 提供路由name映射
