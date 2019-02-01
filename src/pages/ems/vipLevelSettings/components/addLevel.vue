@@ -1,36 +1,43 @@
 <template>
   <div>
-    <Table :columns="columns1" :data="data1"></Table>
+    <Table :columns="columns" :data="data"></Table>
     <div class="add-modal-container">
       <Button type="primary" @click="vipLevelModal.show = true">新增会员登记</Button>
       <Modal
-        class="add-modal"
         v-model="vipLevelModal.show"
-        :loading="vipLevelModal.loading"
         title="添加登记"
-        ok-text="提交"
-        cancel-text="取消"
-        @on-ok="createVipLevel('addLevel')"
+        width="400"
       >
-        <Form class="add-level" ref="addLevel" :model="addLevel" :rules="addLevelRules" :label-width="80">
-          <FormItem label="等级名称">
-            <Input :model="addLevel.levelName" clearable/>
+        <Form class="add-level" v-if="vipLevelModal.show" ref="addLevel" :model="addLevel" :rules="addLevelRules" :label-width="80">
+          <FormItem label="等级名称" prop="levelName">
+            <Input v-model="addLevel.levelName" clearable/>
           </FormItem>
-          <FormItem label="积分要求">
+          <FormItem label="积分要求" prop="startPoints">
             <Row>
               <i-col span="10" >
-                <InputNumber type="text" :min="0" :formatter="value => `${value}`.includes('.') ? parseInt(`${value}`.split('.')[0]) : value" v-model="addLevel.startPoints"  clearable/>
+                <Input v-model.trim="addLevel.startPoints"    clearable style="width:100%"/>
               </i-col>
               <i-col span="4" style="text-align:center;">到</i-col>
               <i-col span="10">
-                <InputNumber type="text" :min="0" :formatter="value => `${value}`.includes('.') ? parseInt(`${value}`.split('.')[0]) : value" :model="addLevel.endPoints" clearable/>
+                <Input v-model.trim="addLevel.endPoints"  clearable style="width:100%"/>
               </i-col>
             </Row>
           </FormItem>
-          <FormItem label="购物折扣">
-            <InputNumber :model="addLevel.levelDiscount" :formatter="value => `${value}`.includes('.') ? parseInt(`${value}`.split('.')[0]) : value" :max="100" clearable/>
+          <FormItem label="购物折扣" prop="levelDiscount">
+            <Row>
+              <i-col span="23">
+                <Input v-model.trim="addLevel.levelDiscount"  clearable style="width:99%"/>
+              </i-col>
+              <i-col span="1">
+                折
+              </i-col>
+            </Row>
           </FormItem>
         </Form>
+        <div slot="footer" class="modal-footer">
+          <Button type="text" size="large" @click="vipLevelModal.show=false">取消</Button>
+          <Button type="primary" size="large" @click="createVipLevel()">保存</Button>
+        </div>
       </Modal>
     </div>
   </div>
@@ -39,54 +46,96 @@
 export default {
   data() {
     return {
-      columns1: [
+      columns: [
         {
           title: '会员等级名称',
-          key: 'name'
+          key: 'levelName'
         },
         {
           title: '积分要求',
-          key: 'points'
+          key: 'startPoints'
         },
         {
           title: '折扣',
-          key: 'discount'
+          key: 'levelDiscount'
         }
       ],
-      data1: [
-        {
-          name: 'John Brown',
-          points: 300,
-          discount: '95折'
-        }
-      ],
+      data: [],
       vipLevelModal: {
-        show: false,
-        loading: false
+        show: false
       },
       addLevel: {
         levelName: '',
-        startPoints: 0,
-        endPoints: 0,
-        levelDiscount: 0
+        startPoints: '',
+        endPoints: '',
+        levelDiscount: ''
       },
-      addLevelRules: {}
+      addLevelRules: {
+        levelName: [
+          {required: true, message: '请填写商品名称', trigger: 'blur'}
+        ],
+        startPoints: [
+          {required: true, message: '请填写积分范围', trigger: 'blur'},
+          {
+            type: 'number',
+            message: '请输入整数',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value)
+            }
+          }
+        ],
+        endPoints: [
+          {required: true, message: '请填写积分范围', trigger: 'blur'},
+          {
+            type: 'number',
+            message: '请输入整数',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value)
+            }
+          }
+        ],
+        levelDiscount: [
+          {required: true, message: '请填写折扣', trigger: 'blur'},
+          {
+            type: 'number',
+            message: '请输入整数',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value)
+            }
+          }
+        ]
+      }
     }
   },
   methods: {
     createVipLevel(name) {
-      console.log(this.addLevel)
-      // TODO: 发送异步请求
-      // this.$refs[name].validate((valid) => {
-      //   console.log(valid)
-      // })
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          let level = this.addLevel
+          let column = Object.assign({}, level)
+          // Object.keys(level).map(c => {
+          //   console.log(c)
+          //   column.c = level[c]
+          // })
+          console.log(column)
+          this.data.push(column)
+          this.$emit('on-add', column)
+          this.$refs[name].resetFields()
+          this.vipLevelModal.show = false
+        }
+      })
     }
   }
 }
 </script>
-<style  scoped lang="scss">
+<style scoped lang="scss">
   .add-modal-container {
     margin-top: 1rem;
   }
-
+  .modal-footer {
+    text-align: center;
+  }
 </style>
