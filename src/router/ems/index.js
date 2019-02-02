@@ -164,7 +164,13 @@ export default [
     path: 'trick',
     name: types.TRICK,
     component: resolve => require(['@/pages/ems/trick'], resolve)
+  },
+  {
+    path: 'vip_list',
+    name: types.VIP_LIST,
+    component: resolve => require(['@/pages/ems/vipList'], resolve)
   }
+  
 
   // , {
   //   path: 'website',

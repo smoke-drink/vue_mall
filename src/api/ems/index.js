@@ -22,6 +22,9 @@ import activityApi from './activityApi'
 import spikeMangeApi from './spikeMangeApi'
 import couponManageApi from './couponManageApi'
 
+// 会员管理
+import vipListApi from './vipListApi'
+
 export {
   storeOfferApi,
   storeOrderApi,
@@ -44,5 +47,6 @@ export {
   refundApi,
   activityApi,
   spikeMangeApi,
-  couponManageApi
+  couponManageApi,
+  vipListApi
 }
