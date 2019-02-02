@@ -1,8 +1,8 @@
-import * as types from './types';
+import * as types from './types'
 
 export const isEmsRouter = name => {
-  return Object.keys(types).some(key => types[key] === name);
-};
+  return Object.keys(types).some(key => types[key] === name)
+}
 
 export default [
   {
@@ -166,9 +166,34 @@ export default [
     component: resolve => require(['@/pages/ems/trick'], resolve)
   },
   {
+    path: 'customer_list',
+    name: types.CUSTOMER_LIST,
+    component: resolve => require(['@/pages/ems/customerList'], resolve)
+  },
+  {
+    path: 'message_push_manage',
+    name: types.MESSAGE_PUSH_MANAGE,
+    component: resolve => require(['@/pages/ems/messagePushManage'], resolve)
+  },
+  {
+    path: 'business_opportunity_manage',
+    name: types.BUSINESS_OPPORTUNITY_MANAGE,
+    component: resolve => require(['@/pages/ems/businessOpportunityManage'], resolve)
+  },
+  {
     path: 'vip_list',
     name: types.VIP_LIST,
     component: resolve => require(['@/pages/ems/vipList'], resolve)
+  },
+  {
+    path: 'vip_level_settings',
+    name: types.VIP_LEVEL_SETTINGS,
+    component: resolve => require(['@/pages/ems/vipLevelSettings'], resolve)
+  },
+  {
+    path: 'vip_settings',
+    name: types.VIP_SETTINGS,
+    component: resolve => require(['@/pages/ems/vipSettings'], resolve)
   }
   
 
@@ -217,4 +242,4 @@ export default [
   //   name: types.WEIXIN_PERMISSON,
   //   component: resolve => require(['@/pages/ems/weixinPermisson'], resolve)
   // }
-];
+]
