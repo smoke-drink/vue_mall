@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     handleSubmit () {
-      let data = Object.assign({}, this.vipLevel)
+      // let data = Object.assign({}, this.vipLevel)
       // TODO: 调用保存api
     },
     addVipLevel (column) {

@@ -116,11 +116,6 @@ export default {
         if (valid) {
           let level = this.addLevel
           let column = Object.assign({}, level)
-          // Object.keys(level).map(c => {
-          //   console.log(c)
-          //   column.c = level[c]
-          // })
-          console.log(column)
           this.data.push(column)
           this.$emit('on-add', column)
           this.$refs[name].resetFields()
