@@ -28,6 +28,9 @@ export const VIP_SETTINGS = `${PREFIX}/VIP_SETTINGS`
 // 会员等级设置
 export const VIP_LEVEL_SETTINGS = `${PREFIX}/VIP_LEVEL_SETTINGS`
 
+// 会员列表
+export const VIP_LIST = `${PREFIX}/VIP_LIST`
+
 // 贴牌商列表
 export const OEM = `${PREFIX}/OEM`
 
@@ -147,17 +150,4 @@ export const WINNING_RECORD = `${PREFIX}/WINNING_RECORD`
 export const ADV = `${PREFIX}/ADV`
 /*
 * 营销管理 End
-* */
-
-/*
-* 会员管理 Start
-* */
-// 会员列表
-export const VIP_LIST = `${PREFIX}/VIP_LIST`
-// 会员等级设置
-export const VIP_LEVEL_SETTINGS = `${PREFIX}/VIP_LEVEL_SETTINGS`
-// 会员卡设置
-export const VIP_SETTINGS = `${PREFIX}/VIP_SETTINGS`
-/*
-* 会员管理 Start
 * */
