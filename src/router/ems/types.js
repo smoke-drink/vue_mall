@@ -28,6 +28,9 @@ export const VIP_SETTINGS = `${PREFIX}/VIP_SETTINGS`
 // 会员等级设置
 export const VIP_LEVEL_SETTINGS = `${PREFIX}/VIP_LEVEL_SETTINGS`
 
+// 会员列表
+export const VIP_LIST = `${PREFIX}/VIP_LIST`
+
 // 贴牌商列表
 export const OEM = `${PREFIX}/OEM`
 

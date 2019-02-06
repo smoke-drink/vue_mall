@@ -181,6 +181,11 @@ export default [
     component: resolve => require(['@/pages/ems/businessOpportunityManage'], resolve)
   },
   {
+    path: 'vip_list',
+    name: types.VIP_LIST,
+    component: resolve => require(['@/pages/ems/vipList'], resolve)
+  },
+  {
     path: 'vip_level_settings',
     name: types.VIP_LEVEL_SETTINGS,
     component: resolve => require(['@/pages/ems/vipLevelSettings'], resolve)
@@ -190,6 +195,7 @@ export default [
     name: types.VIP_SETTINGS,
     component: resolve => require(['@/pages/ems/vipSettings'], resolve)
   }
+  
 
   // , {
   //   path: 'website',

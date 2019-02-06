@@ -26,6 +26,9 @@ import couponManageApi from './couponManageApi';
 import vipCardApi from './vipManageApi/vipCardApi';
 import vipLevelSettingsApi from './vipManageApi/vipLevelSettingsApi';
 
+// 会员管理
+import vipListApi from './vipListApi';
+
 export {
   storeOfferApi,
   storeOrderApi,
@@ -49,6 +52,7 @@ export {
   activityApi,
   spikeMangeApi,
   couponManageApi,
+  vipListApi,
   vipCardApi,
   vipLevelSettingsApi
 };
