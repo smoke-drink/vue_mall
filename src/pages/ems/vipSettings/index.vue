@@ -101,7 +101,7 @@
 </template>
 <script>
 import {requiredList} from './config'
-
+import {vipCardApi} from '@/api/ems'
 export default {
   data() {
     return {
@@ -109,18 +109,20 @@ export default {
         customer_logo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549214692296&di=b6cbc3f45418c98b800d319906456346&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1603%2F21%2Fc14%2F19462188_1458564373718_mthumb.jpg',
         customer_name: '',
         card_ticket_cover: 0,
+        cover: '',
         card_title: '',
         operation_hint: '',
         privilege: '',
         use: '',
         customer_service_phone: '',
         required_information: [],
-        optional_information: []
+        optional_information: [],
+        intrudction: '',
+        card_color: '#19be6b'
       },
       preview_url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549214692296&di=b6cbc3f45418c98b800d319906456346&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1603%2F21%2Fc14%2F19462188_1458564373718_mthumb.jpg',
       requiredList,
       optionalList: requiredList,
-      card_color: '#19be6b',
       upload_normal: 'https://mp.weixin.qq.com/cgi-bin/readtemplate?t=cardticket/card_cover_tmpl&type=info&lang=zh_CN',
       cardRules: {
         customer_logo: [
@@ -166,10 +168,12 @@ export default {
       })
     },
     saveCard(name) {
-      let vipCard = this.vipCard
+      let vipCard = Object.assign({}, this.vipCard)
       this.$refs[name].validate((valid) => {
         if (valid) {
-          console.log(vipCard)
+          let data = this.$refs['editor'].getData()
+          vipCard.intrudction = data
+          vipCardApi.save(vipCard).then()
         }
       })
     }

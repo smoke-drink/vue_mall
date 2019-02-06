@@ -36,6 +36,7 @@
 </template>
 <script>
 import AddLevel from './components/addLevel'
+import {vipLevelSettingsApi as api} from '@/api/ems'
 export default {
   components: {
     AddLevel
@@ -53,8 +54,9 @@ export default {
   },
   methods: {
     handleSubmit () {
-      // let data = Object.assign({}, this.vipLevel)
+      let data = Object.assign({}, this.vipLevel)
       // TODO: 调用保存api
+      api.save(data).then()
     },
     addVipLevel (column) {
       this.vipLevel.levelList.push(column)
