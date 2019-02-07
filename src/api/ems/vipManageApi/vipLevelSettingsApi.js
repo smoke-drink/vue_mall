@@ -9,7 +9,7 @@ export default {
    * url
    * @param {*} data
    */
-  save(data) {
+  saveOrUpdate(data) {
     return axios({
       url: `${MODULE}`,
       method: 'POST',

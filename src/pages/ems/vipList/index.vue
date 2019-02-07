@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { indexMixin } from "@/mixins";
-import { vipListApi } from "@/api/ems";
+import { indexMixin } from '@/mixins'
+import { vipListApi } from '@/api/ems'
 
 export default {
   mixins: [indexMixin],
@@ -25,46 +25,45 @@ export default {
       table: {
         columns: [
           {
-            title: "姓名",
-            key: "name"
+            title: '姓名',
+            key: 'name'
           },
           {
-            title: "手机",
-            key: "phone"
+            title: '手机',
+            key: 'phone'
           },
           {
-            title: "卡号",
-            key: "cardId"
+            title: '卡号',
+            key: 'cardId'
           },
           {
-            title: "卡状态",
-            key: "cardStatus"
+            title: '卡状态',
+            key: 'cardStatus'
           },
           {
-            title: "积分",
-            key: "scord"
+            title: '积分',
+            key: 'scord'
           },
           {
-            title: "等级",
-            key: "level"
+            title: '等级',
+            key: 'level'
           },
           {
-            title: "折扣",
-            key: "discount"
+            title: '折扣',
+            key: 'discount'
           },
           {
-            title: "激活时间",
-            key: "time"
+            title: '激活时间',
+            key: 'time'
           }
         ]
       }
-    };
+    }
   },
   methods: {
     getApi() {
-      return vipListApi;
+      return vipListApi
     }
   }
-};
+}
 </script>
-

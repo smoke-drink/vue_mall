@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const MODULE = '/V1.0/company';
-const removeEmpty = true;
+const MODULE = '/V1.0/company'
+const removeEmpty = true
 
 export default {
   /**
@@ -14,6 +14,6 @@ export default {
       removeEmpty,
       data,
       responseType: 'json'
-    });
+    })
   }
-};
+}

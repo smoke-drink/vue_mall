@@ -102,7 +102,10 @@
 <script>
 import {requiredList} from './config'
 import {vipCardApi} from '@/api/ems'
+// import { formMixin } from '@/mixins'
+
 export default {
+  // mixins: [formMixin],
   data() {
     return {
       vipCard: {
@@ -161,6 +164,9 @@ export default {
     }
   },
   methods: {
+    // getApi () {
+    //   return vipCardApi
+    // },
     relateOptional(data) {
       this.optionalList = this.requiredList.filter(r => {
         let l = Object.assign({}, r)

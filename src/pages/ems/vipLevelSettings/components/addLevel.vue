@@ -36,7 +36,7 @@
         </Form>
         <div slot="footer" class="modal-footer">
           <Button type="text" size="large" @click="vipLevelModal.show=false">取消</Button>
-          <Button type="primary" size="large" @click="createVipLevel()">保存</Button>
+          <Button type="primary" size="large" @click="createVipLevel('addLevel')">保存</Button>
         </div>
       </Modal>
     </div>

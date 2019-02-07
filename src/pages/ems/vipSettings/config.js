@@ -39,4 +39,4 @@ export const requiredList = [
     label: '收入',
     value: 'income'
   }
-];
+]

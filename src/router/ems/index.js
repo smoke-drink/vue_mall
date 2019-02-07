@@ -175,6 +175,11 @@ export default [
     name: types.MESSAGE_PUSH_MANAGE,
     component: resolve => require(['@/pages/ems/messagePushManage'], resolve)
   },
+  // {
+  //   path: 'create_message',
+  //   name: types.CREATE_MESSAGE,
+  //   component: resolve => require(['@/pages/ems/createMessage'], resolve)
+  // },
   {
     path: 'business_opportunity_manage',
     name: types.BUSINESS_OPPORTUNITY_MANAGE,
@@ -195,7 +200,6 @@ export default [
     name: types.VIP_SETTINGS,
     component: resolve => require(['@/pages/ems/vipSettings'], resolve)
   }
-  
 
   // , {
   //   path: 'website',

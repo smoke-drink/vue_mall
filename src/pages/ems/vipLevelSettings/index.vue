@@ -35,9 +35,12 @@
   </div>
 </template>
 <script>
+// import { formMixin } from '@/mixins'
 import AddLevel from './components/addLevel'
 import {vipLevelSettingsApi as api} from '@/api/ems'
+
 export default {
+  // mixins: [formMixin],
   components: {
     AddLevel
   },
@@ -53,10 +56,13 @@ export default {
     }
   },
   methods: {
+    // getApi() {
+    //   return api
+    // },
     handleSubmit () {
       let data = Object.assign({}, this.vipLevel)
       // TODO: 调用保存api
-      api.save(data).then()
+      api.saveOrUpdate(data).then()
     },
     addVipLevel (column) {
       this.vipLevel.levelList.push(column)
