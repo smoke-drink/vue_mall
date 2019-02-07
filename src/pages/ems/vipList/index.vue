@@ -63,6 +63,14 @@ export default {
   methods: {
     getApi() {
       return vipListApi;
+    },
+    list(pageNum, pageSize) {
+      this.setPageNumSize(pageNum, pageSize);
+      let params = this.getParams();
+      return vipListApi.list(params).then(list => {
+        this.afterList(list);
+        this.setTableList(list.dataList);
+      });
     }
   }
 };

@@ -18,7 +18,7 @@ export const CUSTOMER_LIST = `${PREFIX}/CUSTOMER_LIST`
 // 消息推送管理
 export const MESSAGE_PUSH_MANAGE = `${PREFIX}/MESSAGE_PUSH_MANAGE`
 
-// 商业阶段管理
+// 商机阶段管理
 export const BUSINESS_OPPORTUNITY_MANAGE = `${PREFIX}/BUSINESS_OPPORTUNITY_MANAGE`
 
 // VIP管理

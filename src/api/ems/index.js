@@ -28,6 +28,8 @@ import vipLevelSettingsApi from './vipManageApi/vipLevelSettingsApi';
 
 // 会员管理
 import vipListApi from './vipListApi';
+//客户列表
+import customerListApi from './customerListApi';
 
 export {
   storeOfferApi,
@@ -54,5 +56,6 @@ export {
   couponManageApi,
   vipListApi,
   vipCardApi,
-  vipLevelSettingsApi
+  vipLevelSettingsApi,
+  customerListApi
 };
