@@ -1,264 +1,155 @@
 <template>
   <div>
-    客户列表
+    <div class="panel">
+      <div class="panel-body">
+        <Form ref="searchForm" label-position="right" :label-width="85">
+          <Row>
+            <i-col span="8">
+              <FormItem label="所属部门">
+                <Select style="width: 200px;" v-model="params.department">
+                  <Option value>全部</Option>
+                  <Option
+                    v-for="item in departmentMap"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{item.text}}</Option>
+                </Select>
+              </FormItem>
+            </i-col>
+            <i-col span="8">
+              <FormItem label="所属员工">
+                <Select style="width: 200px;" v-model="params.employ">
+                  <Option value>全部</Option>
+                  <Option
+                    v-for="item in employMap"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{item.text}}</Option>
+                </Select>
+              </FormItem>
+            </i-col>
+            <i-col span="8">
+              <FormItem label="最后访问时间">
+                <DatePicker
+                  type="daterange"
+                  style="width: 200px;"
+                  v-model="dateRange"
+                  placeholder="日期区间选择"
+                  format="yyyy-MM-dd"
+                ></DatePicker>
+              </FormItem>
+            </i-col>
+          </Row>
+
+          <Row>
+            <i-col span="8">
+              <FormItem label="昵称">
+                <i-input style="width: 200px;" v-model.trim="params.offerName" type="text"/>
+              </FormItem>
+            </i-col>
+            <i-col span="8">
+              <FormItem label="授权电话">
+                <i-input style="width: 200px;" v-model.trim="params.phone" type="text"/>
+              </FormItem>
+            </i-col>
+          </Row>
+
+          <FormItem>
+            <Button type="primary" @click="search">搜索</Button>
+            <Button type="primary" style="float: right;">数据导出</Button>
+          </FormItem>
+        </Form>
+
+        <Table :columns="table.columns" :data="table.list" ref="table"/>
+        <vma-pagination
+          :pageNum="params.pageNum"
+          :pageSize="params.pageSize"
+          :total="page.totalNum"
+          @change="list"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { indexMixin } from '@/mixins'
-import { personApi } from '@/api/ems'
+import { customerListApi } from '@/api/ems'
+import { watchDateRangeToTimestamp } from '@/utils'
 
 export default {
   mixins: [indexMixin],
-  components: {
-  },
   data() {
     return {
       params: {
-        id: ''
+        department: '',
+        employ: '',
+        offerName: '',
+        phone: ''
       },
+      dateRange: [],
+      departmentMap: [{ value: 11, text: 'haha' }],
+      employMap: [{ value: 22, text: 'xixixi' }],
       table: {
-        columns: [ {
-          title: '话术内容',
-          align: 'center',
-          key: 'content'
-        }, {
-          title: '关键词',
-          render: (h, { row, column, index }) => {
-            if (row.keywords.length > 0) {
-              return h('span', row.keywords.join(','))
-            } else {
-              return h('span', '')
+        columns: [
+          {
+            title: '头像',
+            key: 'imgUrl',
+            align: 'center',
+            render: (h, { row, column, index }) => {
+              return (
+                <div class='img-space-del-table'>
+                  <img src={row.imgUrl} width='60px' height='60px' />
+                </div>
+              )
             }
+          },
+          {
+            title: '微信昵称',
+            key: 'name'
+          },
+          {
+            title: '备注名',
+            key: 'remark'
+          },
+          {
+            title: '授权电话',
+            key: 'phone'
+          },
+          {
+            title: '所属员工',
+            key: 'employ'
+          },
+          {
+            title: '最后访问时间',
+            key: 'time'
+          },
+          {
+            title: '总成交金额',
+            key: 'deal'
           }
-        }, {
-          title: '操作',
-          align: 'center',
-          width: 180,
-          render: (h, { row, column, index }) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.editTrickDetail = true
-                    personApi.getTrickDetail(row.id).then(data => {
-                      this.trickDetail = data
-                      this.keyWords = data.keywords
-                      this.trickDetail.typeId = this.params.id
-                    })
-                  }
-                }
-              }, '修改'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '<p>确定删除该话术?</p>',
-                      onOk: () => {
-                        personApi.deleteTrickDetail(row.id).then(() => {
-                          this.success('删除成功！')
-                          this.listAndDetail(this.params.pageNum)
-                        })
-                      },
-                      onCancel: () => {
-                      }
-                    })
-                  }
-                }
-              }, '删除')
-            ])
-          }
-        }]
-      },
-      trickGroupList: [],
-      typeName: '',
-      editTrickGroup: false,
-      editTrickGroupDetail: {},
-      editTrickDetail: false,
-      trickDetail: {},
-      addKeywordsStatus: false,
-      newKeywords: '',
-      newGroupName: '',
-      editTrickGroupSort: false,
-      keyWords: []
+        ]
+      }
     }
   },
   created() {
-    personApi.trickGroup().then(data => {
-      this.trickGroupList = data
-      this.typeName = this.trickGroupList[0].typeName
-      this.params.id = this.trickGroupList[0].id
-      this.listAndDetail(0)
-    })
+    this.$watch(
+      'dateRange',
+      watchDateRangeToTimestamp(() => this.params, 'startTime', 'endTime')
+    )
   },
   methods: {
     getApi() {
-      return personApi
+      return customerListApi
     },
-    showChange(item) {
-      this.editTrickGroup = true
-      this.editTrickGroupDetail.id = item.id
-      this.editTrickGroupDetail.typeName = item.typeName
-    },
-    saveEdit() {
-      personApi.editTrickGroup(this.editTrickGroupDetail).then(() => {
-        personApi.trickGroup().then(data => {
-          this.trickGroupList = data
-          this.typeName = this.trickGroupList[0].typeName
-        })
-        this.cancelEdit()
+    list(pageNum, pageSize) {
+      this.setPageNumSize(pageNum, pageSize)
+      let params = this.getParams()
+      return customerListApi.list(params).then(list => {
+        this.afterList(list)
+        this.setTableList(list.dataList)
       })
-    },
-    cancelEdit() {
-      this.editTrickGroup = false
-    },
-    changeTrickGroup(id) {
-      this.params.id = id
-      this.listAndDetail(0)
-    },
-    saveEditTrick() {
-      if (this.trickDetail.content == null || this.trickDetail.typeId == null || this.keyWords === []) {
-        this.$Message.error({
-          content: '请输入完整信息',
-          duration: 10,
-          closable: true
-        })
-        return
-      }
-      this.trickDetail.keywords = this.keyWords
-      if (this.trickDetail.id) {
-        personApi.editTrick(this.trickDetail).then(() => {
-          this.cancelEditTrick()
-          this.listAndDetail(0)
-        })
-      } else {
-        personApi.addTrick(this.trickDetail).then(() => {
-          this.cancelEditTrick()
-          this.listAndDetail(0)
-        })
-      }
-    },
-    cancelEditTrick() {
-      this.trickDetail = {}
-      this.keyWords = []
-      this.editTrickDetail = false
-    },
-    closeKeyword(index) {
-      this.keyWords.splice(index, 1)
-    },
-    addKeywords() {
-      this.addKeywordsStatus = true
-    },
-    saveKeywords() {
-      if (this.newKeywords !== '') {
-        this.keyWords.push(this.newKeywords)
-      }
-      this.newKeywords = ''
-      this.addKeywordsStatus = false
-    },
-    addNewTrick() {
-      this.editTrickDetail = true
-    },
-    deleteTrickGroup(item) {
-      this.$Modal.confirm({
-        title: '提示',
-        content: '<p>确定删除 ' + item.typeName + '?</p>',
-        onOk: () => {
-          personApi.deleteTrickGroup(item.id).then(() => {
-            this.success('删除成功！')
-            personApi.trickGroup().then(data => {
-              this.trickGroupList = data
-              this.typeName = this.trickGroupList[0].typeName
-            })
-          })
-        },
-        onCancel: () => {
-        }
-      })
-    },
-    addNewTrickGroup() {
-      this.trickGroupList.push({status: true, id: '123'})
-    },
-    saveAddTrickGroup(index) {
-      if (this.newGroupName === '') {
-        this.$Message.error({
-          content: '请输入话术分组名称',
-          duration: 10,
-          closable: true
-        })
-        return false
-      }
-      this.trickGroupList[index].status = false
-      this.trickGroupList[index].typeName = this.newGroupName
-      personApi.addTrickGroup(this.trickGroupList[index]).then(() => {
-        this.newGroupName = ''
-        personApi.trickGroup().then(data => {
-          this.trickGroupList = data
-          this.typeName = this.trickGroupList[0].typeName
-          this.params.id = this.trickGroupList[0].id
-        })
-      })
-    },
-    cancelAddTrickGroup(index) {
-      this.trickGroupList.splice(index, 1)
-      this.newGroupName = ''
-    },
-    changeTrickGroupSort() {
-      if (this.editTrickGroupSort) {
-        let ids = []
-        for (let i = 0; i < this.trickGroupList.length; i++) {
-          ids.push(this.trickGroupList[i].id)
-        }
-        personApi.editTrickGroupOrder(ids).then(() => {
-          this.editTrickGroupSort = false
-        })
-      } else {
-        this.editTrickGroupSort = true
-      }
-    },
-    upSort(index) {
-      let inUp = this.trickGroupList[index - 1]
-      this.trickGroupList.splice(index - 1, 1, this.trickGroupList[index])
-      this.trickGroupList.splice(index, 1, inUp)
-    },
-    downSort(index) {
-      let inDown = this.trickGroupList[index + 1]
-      this.trickGroupList.splice(index + 1, 1, this.trickGroupList[index])
-      this.trickGroupList.splice(index, 1, inDown)
     }
   }
 }
 </script>
-
-<style scoped lang='scss'>
-  .right_ctl {
-    color: #b1b1b1;
-    float: right;
-    margin-right: 6px;
-    margin-top: 2px;
-  }
-  .left_box ul li{
-    color: #555;
-    padding: 20px 6px 20px 24px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-  }
-  .table table{
-    width: 100% !important;
-  }
-</style>

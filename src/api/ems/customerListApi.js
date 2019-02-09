@@ -5,11 +5,11 @@ const removeEmpty = true
 
 export default {
   /**
-   * 会员卡列表
+   * 客户列表
    */
-  list(data) {
+  list(data = {}) {
     return axios({
-      url: 'https://www.easy-mock.com/mock/5c517de27bd67d354475c860/mall/getVIPList',
+      url: 'https://www.easy-mock.com/mock/5c517de27bd67d354475c860/mall/customerList',
       method: 'POST',
       removeEmpty,
       data,

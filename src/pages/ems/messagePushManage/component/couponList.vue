@@ -13,7 +13,7 @@
 
 <script>
 import { indexMixin } from '@/mixins'
-import { activityApi } from '@/api/ems'
+import { messagePushApi } from '@/api/ems'
 import { generalBtn } from '@/utils'
 
 export default {
@@ -26,10 +26,12 @@ export default {
           title: '优惠券类别',
           key: 'type',
           render: (h, {row, column, index}) => {
-            return h('div',[
+            return h('div', [
               h('p', {
                 style: {
-                  padding: '10px'
+                  padding: '10px',
+                  backgroundColor: 'rgba(240,240,240,.85)',
+                  marginTop: '10px'
                 }
               }, row.type || '满300-100 优惠券'),
               h('span', {
@@ -40,13 +42,13 @@ export default {
               h('span', {}, `已发：${row.rest || 12}`)
             ])
           }
-        },{
+        }, {
           title: '操作',
           width: 100,
           render: (h, { row, column, index }) => {
             return h('div', [
               generalBtn(h, '选择', () => {
-                activityApi.getStoreOffer(row.id).then(data => {
+                messagePushApi.getCoupon(row.id).then(data => {
                   this.$emit('select', data)
                 })
               })
@@ -58,19 +60,10 @@ export default {
   },
   methods: {
     getApi() {
-      return activityApi
+      return messagePushApi
     },
-    getListApi(params) {
-      return activityApi.listStoreOffer(params)
-    },
-    getParams() {
-      let params = Object.assign({}, this.params)
-      if (params.offerType && params.offerType.length) {
-        params.offerType = params.offerType[params.offerType.length - 1]
-      } else {
-        params.offerType = ''
-      }
-      return params
+    getListApi() {
+      return messagePushApi.listCoupon()
     }
   }
 }

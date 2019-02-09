@@ -29,7 +29,8 @@ import vipListApi from './vipListApi'
 
 // 客户管理
 import messagePushApi from './customerManageApi/messagePushApi'
-
+// 客户列表
+import customerListApi from './customerListApi'
 export {
   storeOfferApi,
   storeOrderApi,
@@ -56,5 +57,6 @@ export {
   vipListApi,
   vipCardApi,
   vipLevelSettingsApi,
-  messagePushApi
+  messagePushApi,
+  customerListApi
 }

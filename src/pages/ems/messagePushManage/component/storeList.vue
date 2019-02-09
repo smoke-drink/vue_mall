@@ -47,11 +47,11 @@ export default {
       },
       table: {
         columns: [{
-          title: '商品ID',
-          key: 'code'
-        }, {
           title: '商品名称',
           key: 'offerName'
+        }, {
+          title: '商品价格',
+          key: 'marketPrice'
         }, {
           title: '操作',
           width: 100,

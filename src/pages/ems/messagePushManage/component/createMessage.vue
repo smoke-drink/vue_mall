@@ -15,15 +15,15 @@
                   label="内容">
           <Input type="textarea" v-model="entity.content" :autosize="{minRows: 2,maxRows: 5}"/>
         </FormItem>
-        <FormItem prop="relate_setting" label="关联设置">
-          <RadioGroup v-model="entity.relate_setting">
+        <FormItem prop="relateSetting" label="关联设置">
+          <RadioGroup v-model="entity.relateSetting">
             <Radio :label="0">不关联</Radio>
             <Radio :label="1">商品</Radio>
             <Radio :label="2">优惠券</Radio>
           </RadioGroup>
           <p>关联设置是指当用户点击消息时跳转到的页面，如果选择不关联则默认跳转到商城首页</p>
-          <div v-if="entity.relate_setting == 1">
-            <div v-if="entity.storeId">
+          <div v-if="entity.relateSetting == 1">
+            <div v-if="entity.store.storeId">
               <FormItem label="产品名称: ">
                 {{entity.store.offerName}}
               </FormItem>
@@ -65,8 +65,8 @@
                       @click="showStoreOffer">选择商品</Button>
             </div>
           </div>
-          <div v-if="entity.relate_setting == 2">
-            <div v-if="entity.couponId">
+          <div v-if="entity.relateSetting == 2">
+            <div v-if="entity.coupon.couponId">
               <FormItem label="优惠券名称: ">
                 {{entity.coupon.couponName}}
               </FormItem>
@@ -80,15 +80,16 @@
             </div>
           </div>
         </FormItem>
-        <FormItem label="发送时间" prop="send_time">
+        <FormItem label="发送时间" prop="sendTime">
           <DatePicker transfer
                         type="date"
                         placement="bottom-end"
+                        v-model="entity.sendTime"
                         placeholder="发送时间"
                         style="width:rem(300px)"></DatePicker>
         </FormItem>
-        <FormItem label="发送范围" prop="send_range" >
-          <Input  v-model="entity.send_range" @on-focus="choosePerson" />
+        <FormItem label="发送范围" prop="sendRange" >
+          <Input  v-model="entity.sendRange" @on-focus="choosePerson" />
           <p>选择后凡是符合条件的客户系统会自动在在当天晚上8点发送消息</p>
         </FormItem>
         <FormItem >
@@ -112,10 +113,10 @@
       </vma-lazy>
     </Modal>
     <Modal v-model="chooseCouponModal"
-           title="选择优惠群"
+           title="选择优惠券"
            class="modal-hide-footer"
            width="600px">
-      <vma-lazy :initial="chooseGoodsModal">
+      <vma-lazy :initial="chooseCouponModal">
         <coupon-list @select="selectCoupon" />
       </vma-lazy>
     </Modal>
@@ -133,11 +134,17 @@ export default {
     prop: 'value',
     event: 'model'
   },
-  components: { StoreList },
+  components: { StoreList, CouponList },
   props: {
     value: {
       type: Boolean,
       default: false
+    },
+    detailEntity: {
+      type: Object,
+      default: function() {
+        return {}
+      }
     }
   },
   computed: {
@@ -154,6 +161,15 @@ export default {
     },
     detailPhotoList() {
       return this.entity.store.imgs.filter(v => v.type === 2)
+    },
+  },
+  watch: {
+    detailEntity(newVal) {
+      let value = Object.assign({}, newVal.data)
+      if(value.title) {
+        this.entity = value
+        this.entity.sendTime = new Date(value.sendTime)
+      }
     }
   },
   data() {
@@ -163,19 +179,20 @@ export default {
       },
       entity: {
         content: '',
-        relate_settings: '',
-        send_time: '',
+        relateSetting: 2,
+        sendTime: '2019-12-22',
         title: '',
-        send_range: '',
+        sendRange: '',
         store: {
+          storeId: '',
           offerName: '',
           marketPrice: '',
           offerPrice: '',
           imgs: []
         },
         coupon: {
-          couponId: '',
-          couponName: ''
+          couponId: '2',
+          couponName: '100-300优惠券'
         }
       },
       choosePersonModal: false,
@@ -219,17 +236,15 @@ export default {
         content: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
         ],
-        send_time: [
+        sendTime: [
           { required: true, type: 'date', message: '发送时间不能为空', trigger: 'change' }
         ],
-        send_range: [
+        sendRange: [
           { required: true, message: '发送范围不能为空', trigger: 'change' }
         ]
       },
       imgUrls: []
     }
-  },
-  mounted() {
   },
   methods: {
     clickSelectCover() {
@@ -265,7 +280,7 @@ export default {
           return p.label
         }
       }).filter(f => !!f).join(',')
-      this.entity.send_range = value
+      this.entity.sendRange = value
       console.log(this.entity)
     },
     showStoreOffer() {

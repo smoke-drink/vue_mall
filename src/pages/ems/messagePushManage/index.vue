@@ -14,7 +14,8 @@
         />
       </div>
     </div>
-    <CreateMessage v-model="shouldCreateMessage"
+    <CreateMessage v-model="show"
+               :detailEntity="detail"
                v-if="resetCreatePanel"
                @on-createsuccess='createSuccess'></CreateMessage>
   </div>
@@ -32,6 +33,7 @@ export default {
   },
   data() {
     return {
+      detail: {message: '23'},
       table: {
         columns: [
           {
@@ -99,7 +101,7 @@ export default {
           }
         ]
       },
-      shouldCreateMessage: false,
+      show: false,
       resetCreatePanel: true
     }
   },
@@ -107,8 +109,16 @@ export default {
     getApi() {
       return messagePushApi
     },
+    list(pageNum, pageSize) {
+      this.setPageNumSize(pageNum, pageSize)
+      let params = this.getParams()
+      return messagePushApi.list(params).then(list => {
+        this.afterList(list)
+        this.setTableList(list.dataList)
+      })
+    },
     createNewMessage() {
-      this.shouldCreateMessage = true
+      this.show = true
     },
     createSuccess() {
       this.search()
@@ -116,6 +126,28 @@ export default {
       this.$nextTick(() => {
         this.resetCreatePanel = true
       })
+    },
+    open(id = '') {
+      let params = this.getParams()
+      messagePushApi.open(id).then((data)=>{
+        return messagePushApi.list(params).then(list => {
+          this.afterList(list)
+          this.setTableList(list.dataList)
+        })
+      })
+    },
+    showDetail(entityOrId) {
+      if (!entityOrId || typeof entityOrId === 'object') {
+        this.detail = entityOrId || {}
+        this.show = true
+      } else {
+        this.getApi().get(entityOrId).then(data => {
+          this.showDetail(data)
+        })
+      }
+    },
+    edit(id = '1') {
+      this.showDetail(id)
     }
   }
 }
