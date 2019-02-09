@@ -36,6 +36,7 @@
                   v-model="dateRange"
                   placeholder="日期区间选择"
                   format="yyyy-MM-dd"
+                  placement="bottom-end"
                 ></DatePicker>
               </FormItem>
             </i-col>
